@@ -13,7 +13,7 @@ Install the git hooks with:
 
 ```bash
 $ pre-commit install
-$ cp ./scripts/git-hook-commit-msg .git/hooks/commit-msg
+$ cp ./git-hook-commit-msg .git/hooks/commit-msg
 ```
 
 Run the `install.sh` script:
