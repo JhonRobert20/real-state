@@ -55,3 +55,13 @@ To access the database, go to http://localhost:8081/ and use the following crede
 
  * Username: real_state
  * Password: real_state!
+
+
+### Access to the API
+
+To access the API, go to http://localhost:8000/api/fa/v1/estate/estates/
+
+
+### Access to django admin
+
+To access the API, go to http://localhost:8000/web/admin/
