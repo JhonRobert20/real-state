@@ -7,7 +7,7 @@ services:
   # Databases
   database:
     <<: *restart_policy
-    image: "postgis/postgis:14-3.3-alpine"
+    image: "postgres:12.2"
     environment:
       POSTGRES_DB: real_state
       POSTGRES_USER: real_state
@@ -64,10 +64,54 @@ services:
     networks:
       - internal
 
+  # Web
+  web:
+    <<: *restart_policy
+    build:
+      target: local
+      context: real_state/
+    working_dir: /home/ubuntu/webs/real_state/real_state
+    command: ./bin/run.sh
+    depends_on:
+      - database
+      - mongo
+    ports:
+      - "3031:3031"
+      - "4444:4444"
+      - "8000:8000"
+    volumes:
+      - ./real_state:/home/ubuntu/webs/real_state/real_state
+    networks:
+      - internal
+
+  nginx:
+    <<: *restart_policy
+    ports:
+      - "80:80/tcp"
+      - "443:443"
+    links:
+      - web
+    image: "nginx:latest"
+    volumes:
+      - type: bind
+        read_only: true
+        source: ./nginx/etc/
+        target: /etc/nginx
+      - type: bind
+        read_only: true
+        source: ./nginx/www/
+        target: /var/www/
+    depends_on:
+      - web
+    networks:
+      - internal
+
 volumes:
   real_state-database:
     external: true
   real_state-mongo:
+    external: true
+  real_state-redis:
     external: true
 
 networks:
