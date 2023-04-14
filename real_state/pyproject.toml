@@ -1,0 +1,42 @@
+[tool.black]
+line-length = 88
+include-trailing-comma = false
+skip-string-normalization = false
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.eggs
+  | \.git
+  | migrations
+  | \.hg
+  | \.mypy_cache
+  | \.md
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+)/
+'''
+
+[tool.poetry]
+name = "real-state"
+version = "0.1.0"
+description = ""
+authors = ["Jhon Robert <jhonbara51214@gmail.com>"]
+packages = [{include = "real_state"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+Django = "^4.2"
+uvicorn = "^0.21.1"
+fastapi = "^0.95.1"
+python-dotenv = "~0.21.0"
+psycopg2-binary= "^2.9.3"
+uWSGI = "~2.0.20"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
