@@ -6,8 +6,10 @@ from django.core.wsgi import get_wsgi_application
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.wsgi import WSGIMiddleware
+from starlette.staticfiles import StaticFiles
 
 # Export Django settings env variable
+
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "real_state.settings")
 
 apps.populate(settings.INSTALLED_APPS)
@@ -42,6 +44,9 @@ def get_application() -> FastAPI:
 
     # Include all api endpoints
     app.include_router(api_router, prefix=settings.API_V1_STR)
+
+    # Mounts the static files
+    app.mount("/static", StaticFiles(directory="static_root"), name="static")
 
     # Mounts an independent web URL for Django WSGI application
     app.mount(f"{settings.WSGI_APP_URL}", WSGIMiddleware(application))
