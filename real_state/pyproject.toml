@@ -35,6 +35,7 @@ fastapi = "^0.95.1"
 python-dotenv = "~0.21.0"
 psycopg2-binary= "^2.9.3"
 uWSGI = "~2.0.20"
+gunicorn = "^20.1.0"
 
 
 [build-system]
