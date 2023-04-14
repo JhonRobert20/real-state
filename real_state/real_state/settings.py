@@ -20,9 +20,7 @@ SECRET_KEY = "django-insecure-ov)pq+asnsjnk-j#3ymyc_&4*kzdps+b)kbwh^vicu179belr1
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
-
-INTERNAL_IPS = ["localhost"]
-
+# Conflicts with FastAPI
 
 # Application definition
 
@@ -34,6 +32,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "estates",
+    "base",
 ]
 
 MIDDLEWARE = [
@@ -77,7 +76,7 @@ DATABASES = {
         "USER": os.environ.get("DB_USER", "real_state"),
         "PASSWORD": os.environ.get("DB_PASSWORD", "real_state!"),
         "HOST": os.environ.get("DB_HOST", "database"),
-        "PORT": int(os.environ.get("DB_PORT", "")),
+        "PORT": 5432,
         "CONN_MAX_AGE": 60 * 5,  # 5 minutes
     }
 }
@@ -123,3 +122,7 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+API_V1_STR: str = "/api/fa/v1"
+WSGI_APP_URL: str = "/web"
+PROJECT_NAME: str = "Real State"
