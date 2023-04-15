@@ -159,7 +159,14 @@ MESSAGE_TAGS = {
     messages.ERROR: "alert-danger",
 }
 
+# Cookies
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 7  # 1 week
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 SESSION_COOKIE_DOMAIN = "localhost"
 SESSION_COOKIE_SECURE = False
+
+# Mongo
+MONGO_URL = os.environ.get("MONGO_URL", "mongo:27017")
+MONGO_DB_USER = os.environ.get("MONGO_DB_USER", "real_state")
+MONGO_DB_PASSWORD = os.environ.get("MONGO_DB_PASSWORD", "real_state!")
+MONGO_DB_DATABASE = os.environ.get("MONGO_DB_DATABASE", "real_state")
