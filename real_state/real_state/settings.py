@@ -34,7 +34,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # First Party Apps
     "estates",
-    "base",
     "users",
     "real_state",
     # Third Party Apps
