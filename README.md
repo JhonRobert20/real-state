@@ -59,7 +59,7 @@ To access the database, go to http://localhost:8081/ and use the following crede
 
 ### Access to the API
 
-To access the API, go to http://localhost:8000/api/fa/v1/estate/estates/
+To access the API, go to http://localhost:8000/api/docs/
 
 
 ### Access to django admin
