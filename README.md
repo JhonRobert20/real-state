@@ -74,3 +74,9 @@ To populate the database, run the following command:
 ```bash
 docker-compose run web python manage.py populate_db
 ```
+
+## Run tests
+
+```bash
+docker-compose run web pytest
+```
