@@ -72,7 +72,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         # Return the first part of the email address if not exists name
-        return self.name or self.email.split("@")[0]
+        return self.name or self.email.split("@")[0] if self.email else str(self.id)
 
     class Meta:
         verbose_name = _("user")
