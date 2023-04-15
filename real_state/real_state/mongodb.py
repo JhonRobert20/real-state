@@ -31,14 +31,19 @@ class MongoDB:
         sort_by = get_sort(sort)
         return self.estates_collection.find(filter_estates).sort(sort_by)
 
+    def delete_one_estate(self, estate_id: str):
+        return self.estates_collection.delete_one({"_id": estate_id})
+
     def get_all_estates(self):
         return self.estates_collection.find()
+
+    def remove_entire_collection(self):
+        return self.estates_collection.drop()
 
     def update_many_estates(self, estates: list[EstateBase]):
         try:
             update_operations = []
             for estate in estates:
-                print(estate)
                 update_operations.append(
                     UpdateOne(
                         {"_id": estate["id"]},
@@ -65,33 +70,45 @@ class MongoDB:
 def get_paginator_mongo(
     collection, filter_mongo, page_size, page, paginated_type, order_by=None, **kwargs
 ):
-    start_index = (page - 1) * page_size
-    end_index = start_index + page_size
+    try:
+        start_index = (page - 1) * page_size
+        end_index = start_index + page_size
 
-    total_results = collection.count_documents(filter_mongo)
+        total_results = collection.count_documents(filter_mongo)
 
-    if order_by:
-        results = (
-            collection.find(filter_mongo)
-            .sort(get_sort(order_by))
-            .skip(start_index)
-            .limit(page_size)
+        if order_by:
+            results = (
+                collection.find(filter_mongo)
+                .sort(get_sort(order_by))
+                .skip(start_index)
+                .limit(page_size)
+            )
+        else:
+            results = collection.find(filter_mongo).skip(start_index).limit(page_size)
+
+        paginator = paginated_type(
+            page=page,
+            pages=(total_results + page_size - 1) // page_size,
+            has_next=end_index < total_results,
+            has_prev=start_index > 0,
+            total_results=total_results,
+            order_by=order_by,
+            objects=list(results),
+            **kwargs,
         )
-    else:
-        results = collection.find(filter_mongo).skip(start_index).limit(page_size)
 
-    paginator = paginated_type(
-        page=page,
-        pages=(total_results + page_size - 1) // page_size,
-        has_next=end_index < total_results,
-        has_prev=start_index > 0,
-        total_results=total_results,
-        order_by=order_by,
-        objects=list(results),
-        **kwargs,
-    )
-
-    return paginator
+        return paginator
+    except Exception:
+        return paginated_type(
+            page=0,
+            pages=0,
+            has_next=False,
+            has_prev=False,
+            total_results=0,
+            order_by=None,
+            objects=[],
+            **kwargs,
+        )
 
 
 mongodb = MongoDB()
