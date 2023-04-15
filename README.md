@@ -85,7 +85,7 @@ To access the API, go to http://localhost:8000/web/admin/
 To populate the database, run the following command:
 
 ```bash
-docker-compose run web python manage.py populate_db
+docker-compose run web python manage.py populate
 ```
 
 ## Run tests
