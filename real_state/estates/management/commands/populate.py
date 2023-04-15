@@ -42,6 +42,8 @@ class Command(BaseCommand):
             for key, value in asset.items():
                 if pd.isna(value):
                     asset[key] = None
+        
+        assets = assets[:10]
 
         print(f"Creating {len(assets)} estates")
         mongodb.update_many_estates(assets)
