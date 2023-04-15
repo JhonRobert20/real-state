@@ -190,3 +190,6 @@ real_state/static_root/
 real_state/static_root
 real_state/real_state/static_root/
 real_state/real_state/static_root
+
+# install logs
+install_log*.txt
