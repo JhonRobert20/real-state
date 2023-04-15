@@ -1,22 +1,49 @@
-from typing import Any
+from typing import Any, Optional
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 
 from real_state.auth import is_logged
+from real_state.mongodb import get_paginator_mongo, mongodb
+from real_state.schema import EstateBase, PaginatedEstates
 
 router = APIRouter()
 
 
-@router.get("/estates/", response_model=str)
-def get_multiple_estate() -> Any:
+@router.get("/estates/", response_model=PaginatedEstates)
+def get_all(logged: bool = Depends(is_logged)) -> PaginatedEstates:
     """
-    Endpoint to get multiple real states based on offset and limit values.
+    Get all estates - paginated
     """
-    return "Welcome to the real state fastapi app"
+
+    order_by = [{"field": "date", "ordering": "ASC"}]
+
+    return get_paginator_mongo(
+        mongodb.estates_collection,
+        {},
+        10,
+        1,
+        PaginatedEstates,
+        order_by=order_by,
+    )
 
 
-@router.get("/items/")
-async def read_confidential_info(logged: bool = Depends(is_logged)):
-    if not logged:
-        return HTTPException(status_code=401, detail="Not logged")
-    return "Welcome to the real state fastapi app"
+@router.post("/estates/", response_model=EstateBase)
+def create_or_update_estate(
+    estate: EstateBase, logged: bool = Depends(is_logged)
+) -> EstateBase:
+    """
+    Create a real state.
+    """
+    estate = estate.dict()
+    mongodb.update_many_estates([estate])
+    return list(mongodb.filter_estates({"_id": str(estate["id"])}))[0]
+
+
+@router.get("/estates/{estate_id}", response_model=Optional[EstateBase])
+def get_estate(estate_id: str, logged: bool = Depends(is_logged)) -> Any:
+    """
+    Get a real state based on its id.
+    """
+    filtered = list(mongodb.filter_estates({"_id": estate_id}))
+
+    return filtered[0] if filtered else None
