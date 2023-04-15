@@ -27,12 +27,12 @@ def confirm_coordinate(value: str) -> str:
 
 
 class EstateBase(BaseModel):
-    build_status: Optional[str] = None
-    is_active: Optional[bool] = None
-    start_month: Optional[int] = None
+    build_status: Optional[str] = ""
+    is_active: Optional[bool] = True
+    start_month: Optional[int] = 0
     construction_type: Optional[int] = None
     date_diff: Optional[int] = None
-    description: Optional[str] = None
+    description: Optional[str] = ""
     date_in: Optional[datetime] = None
     property_type: Optional[int] = None
     end_week: Optional[int] = None
@@ -40,7 +40,7 @@ class EstateBase(BaseModel):
     id: str
     coordinates: Optional[str] = None
     boundary_id: Optional[str] = None
-    id_uda: Optional[str] = None
+    id_uda: Optional[str] = ""
     title: Optional[str] = None
     listing_type: Optional[int] = None
     date: Optional[datetime] = None
