@@ -34,7 +34,14 @@ class Command(BaseCommand):
 
         # Create estates
         assets = pd.read_csv("assets.csv")
+        assets.dropna(subset=["id"], inplace=True)
+
         assets = assets.to_dict(orient="records")
+        # Remove all the Nan of the dict
+        for asset in assets:
+            for key, value in asset.items():
+                if pd.isna(value):
+                    asset[key] = None
 
         print(f"Creating {len(assets)} estates")
         mongodb.update_many_estates(assets)
