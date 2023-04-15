@@ -1,0 +1,1 @@
+ESTATE_COLLECTION_NAME = "estates"
