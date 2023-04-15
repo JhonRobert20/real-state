@@ -8,6 +8,8 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import redirect, render
 from users.forms import NewUserForm
 
+from real_state.mongodb import mongodb
+
 
 def set_cookie(response, key, value, days_expire=7):
     one_day = 24 * 60 * 60
@@ -74,7 +76,14 @@ def login_request(request):
 
 
 def homepage(request):
-    return render(request=request, template_name="home.html", context={})
+    estates = mongodb.filter_estates({})
+    context = {
+        "estates": list(estates),
+        "title": "Pending Estate Title",
+        "description": "Pending Estate Description",
+        "coordinates": "Pending Estate Coordinates",
+    }
+    return render(request=request, template_name="home.html", context=context)
 
 
 def logout_request(request):
