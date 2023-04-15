@@ -12,20 +12,20 @@
 Install the git hooks with:
 
 ```bash
-$ pre-commit install
-$ cp ./git-hook-commit-msg .git/hooks/commit-msg
+pre-commit install
+cp ./git-hook-commit-msg .git/hooks/commit-msg
 ```
 
 Run the `install.sh` script:
 
 ```bash
-$ ./install.sh
+./install.sh
 ```
 
 Start Docker containers:
 
 ```bash
-$ docker-compose up -d
+docker-compose up -d
 ```
 
 Create a new superuser:
@@ -65,3 +65,12 @@ To access the API, go to http://localhost:8000/api/docs/
 ### Access to django admin
 
 To access the API, go to http://localhost:8000/web/admin/
+
+
+### Populate the database
+
+To populate the database, run the following command:
+
+```bash
+docker-compose run web python manage.py populate_db
+```
