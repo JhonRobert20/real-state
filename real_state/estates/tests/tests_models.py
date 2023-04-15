@@ -12,3 +12,4 @@ class EstateBaseTest(TestCase):
         call_command("populate")
         assert User.objects.count() == 10
         assert len(list(mongodb.filter_estates({}))) == 11
+        mongodb.remove_entire_collection()
