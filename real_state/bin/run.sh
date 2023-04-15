@@ -11,5 +11,8 @@ python manage.py collectstatic --noinput
 python manage.py migrate
 
 # Run django and fast api
-gunicorn real_state.asgi:app -w 4 -k uvicorn.workers.UvicornWorker -b 0.0.0.0:8000 --reload &
+## For production
+#gunicorn real_state.asgi:app -w 4 -k uvicorn.workers.UvicornWorker -b 0.0.0.0:8000 --reload &
+## For development
+uvicorn real_state.asgi:app --workers 1 --reload --host 0.0.0.0 --port 8000 &
 fg %1
