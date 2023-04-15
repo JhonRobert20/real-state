@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Real State{% endblock %}
+{% block content %}
+
+{% load crispy_forms_tags %}
+
+<div class="container py-5">
+	{% if user.is_authenticated %}
+	<h1>Main page</h1>
+
+	<p class="text-center">See all the states</p>
+		{{ user }}
+	{% else %}
+		<h1 class="text-center"> This information is only for registered users</h1>
+	{% endif %}
+</div>
+
+{% endblock %}
