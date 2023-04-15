@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "real_state",
     # Third Party Apps
     "crispy_forms",
+    "corsheaders",
 ]
 
 # Auth User Model
@@ -51,6 +52,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
 ]
 
 ROOT_URLCONF = "real_state.urls"
@@ -134,7 +136,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static_root")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-API_V1_STR: str = "/api/fa/v1"
+API_V1_STR: str = "/api"
 WSGI_APP_URL: str = "/web"
 PROJECT_NAME: str = "Real State"
 
@@ -142,6 +144,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000",
     "http://127.0.0.1:8000",
 ]
+CORS_ALLOW_CREDENTIALS = True
 
 
 AUTHENTICATION_BACKENDS = [
@@ -155,3 +158,8 @@ MESSAGE_TAGS = {
     messages.WARNING: "alert-warning",
     messages.ERROR: "alert-danger",
 }
+
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 7  # 1 week
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+SESSION_COOKIE_DOMAIN = "localhost"
+SESSION_COOKIE_SECURE = False
