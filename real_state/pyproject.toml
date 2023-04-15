@@ -23,7 +23,7 @@ exclude = '''
 [tool.poetry]
 name = "real-state"
 version = "0.1.0"
-description = ""
+description = "Real state project"
 authors = ["Jhon Robert <jhonbara51214@gmail.com>"]
 packages = [{include = "real_state"}]
 
@@ -36,6 +36,7 @@ python-dotenv = "~0.21.0"
 psycopg2-binary= "^2.9.3"
 uWSGI = "~2.0.20"
 gunicorn = "^20.1.0"
+django-crispy-forms = "1.14.0"
 
 
 [build-system]
