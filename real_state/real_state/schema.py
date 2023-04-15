@@ -37,7 +37,7 @@ class EstateBase(BaseModel):
     property_type: Optional[int] = None
     end_week: Optional[int] = None
     typology_type: Optional[int] = None
-    id: str = None
+    id: str
     coordinates: Optional[str] = None
     boundary_id: Optional[str] = None
     id_uda: Optional[str] = None
@@ -49,15 +49,15 @@ class EstateBase(BaseModel):
 
 
 class OrderBy(BaseModel):
-    field: str
-    direction: str
+    field: Optional[str] = None
+    direction: Optional[str] = None
 
 
 class PaginatedEstates(BaseModel):
-    objects: List[EstateBase]
-    page: int
-    pages: int
-    has_next: bool = False
-    has_prev: bool = False
+    objects: Optional[List[EstateBase]] = None
+    page: Optional[int] = 0
+    pages: Optional[int] = 0
+    has_next: Optional[bool] = False
+    has_prev: Optional[bool] = False
     order_by: Optional[OrderBy] = None
     total_results: Optional[int] = 0
