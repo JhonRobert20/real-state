@@ -20,7 +20,7 @@ Welcome to the Real state backend project!
 - Please, check the TODO section to see what I would like to improve in the future.
 
 ## Important
-- Use localhost:8000 not 0.0.0.0 please
+- Use localhost:8000, not 0.0.0.0
 
 ## Setup
 
