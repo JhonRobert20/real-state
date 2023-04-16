@@ -101,3 +101,4 @@ docker-compose run web pytest
 - Convert the estate before saving it to the database
 - Add download csv endpoint
 - Add download csv action in the admin panel
+- Add JWT authentication for the API
