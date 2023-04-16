@@ -97,8 +97,6 @@ docker-compose run web pytest
 ```
 
 ## TODO
-- Add tests for the views
-- Filter endpoints for the API
 - Recover password view
 - Convert the estate before saving it to the database
 - Add download csv endpoint
