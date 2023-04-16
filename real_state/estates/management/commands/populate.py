@@ -1,4 +1,5 @@
 import pandas as pd
+from django.conf import settings
 from django.core.management.base import BaseCommand
 from mixer.backend.django import mixer
 from users.models import User
@@ -25,7 +26,7 @@ class Command(BaseCommand):
 
         print(f"Creating {number} users")
         # Create a csv file with the users and passwords
-        with open("users.csv", "a") as f:
+        with open(settings.CSV_FILE_PATH, "a") as f:
             for email, password in zip(user_emails, passwords):
                 User.objects.create_user(email=email, password=password)
                 f.write(f"email: {email}, password: {password}\n")
@@ -42,7 +43,7 @@ class Command(BaseCommand):
             for key, value in asset.items():
                 if pd.isna(value):
                     asset[key] = None
-        
+
         assets = assets[:10]
 
         print(f"Creating {len(assets)} estates")
