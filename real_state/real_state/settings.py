@@ -170,3 +170,7 @@ MONGO_URL = os.environ.get("MONGO_URL", "mongo:27017")
 MONGO_DB_USER = os.environ.get("MONGO_DB_USER", "real_state")
 MONGO_DB_PASSWORD = os.environ.get("MONGO_DB_PASSWORD", "real_state!")
 MONGO_DB_DATABASE = os.environ.get("MONGO_DB_DATABASE", "real_state")
+
+# UsersCsv
+
+CSV_FILE_PATH = "users.csv"
