@@ -8,7 +8,8 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import redirect, render
 from users.forms import NewUserForm
 
-from real_state.mongodb import mongodb
+from real_state.mongodb import get_paginator_mongo, mongodb
+from real_state.schema import PaginatedEstates
 
 
 def set_cookie(response, key, value, days_expire=7):
@@ -76,12 +77,28 @@ def login_request(request):
 
 
 def homepage(request):
-    estates = mongodb.filter_estates({})
+    try:
+        page_number = int(request.GET.get("page"))
+    except ValueError:
+        page_number = 1
+
+    page_size = 5
+    estates_paginated = get_paginator_mongo(
+        mongodb.estates_collection,
+        {},
+        page_size,
+        page_number,
+        PaginatedEstates,
+        order_by=[{"field": "date", "ordering": "ASC"}],
+    )
     context = {
-        "estates": list(estates),
+        "estates": list(estates_paginated.objects),
         "title": "Pending Estate Title",
         "description": "Pending Estate Description",
         "coordinates": "Pending Estate Coordinates",
+        "page_number": page_number,
+        "has_prev": estates_paginated.has_prev,
+        "has_next": estates_paginated.has_next,
     }
     return render(request=request, template_name="home.html", context=context)
 
