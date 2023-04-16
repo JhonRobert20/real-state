@@ -79,7 +79,7 @@ def login_request(request):
 def homepage(request):
     try:
         page_number = int(request.GET.get("page"))
-    except ValueError:
+    except (ValueError, TypeError):
         page_number = 1
 
     page_size = 5
