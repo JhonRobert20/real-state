@@ -10,18 +10,25 @@ router = APIRouter()
 
 
 @router.get("/estates/", response_model=PaginatedEstates)
-def get_all(logged: bool = Depends(is_logged)) -> PaginatedEstates:
+def get_all(
+    page: int = 1,
+    page_size: int = 10,
+    is_active: bool = False,
+    logged: bool = Depends(is_logged),
+) -> PaginatedEstates:
     """
     Get all estates - paginated
     """
 
     order_by = [{"field": "date", "ordering": "ASC"}]
 
+    filter_states = {"is_active": is_active}
+
     return get_paginator_mongo(
         mongodb.estates_collection,
-        {},
-        10,
-        1,
+        filter_states,
+        page_size,
+        page,
         PaginatedEstates,
         order_by=order_by,
     )
