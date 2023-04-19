@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     "estates",
     "users",
     "real_state",
+    "chats",
     # Third Party Apps
     "crispy_forms",
     "corsheaders",
@@ -174,3 +175,8 @@ MONGO_DB_DATABASE = os.environ.get("MONGO_DB_DATABASE", "real_state")
 # UsersCsv
 
 CSV_FILE_PATH = "users.csv"
+
+
+# Openai
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
+OPENAI_MODEL = "gpt-3.5-turbo"

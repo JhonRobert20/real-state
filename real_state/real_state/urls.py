@@ -14,6 +14,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from chats import urls as chats_urls
 from django.contrib import admin
 from django.urls import include, path
 from users import urls as users_urls
@@ -21,4 +22,5 @@ from users import urls as users_urls
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("users/", include(users_urls)),
+    path("chats/", include(chats_urls)),
 ]

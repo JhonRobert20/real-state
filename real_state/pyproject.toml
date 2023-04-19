@@ -43,6 +43,7 @@ mixer = "^7.2.2"
 pandas = "^2.0.0"
 pytest-django = "^4.5.2"
 httpx = "^0.24.0"
+openai = "0.27.0"
 
 
 [build-system]
