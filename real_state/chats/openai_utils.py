@@ -12,20 +12,23 @@ def new_chat(user: User):
 
 
 def new_message_in_chat(chat: Chat, content: str):
-    Message.objects.create(chat=chat, content=content, role="user")
-    messages = Message.objects.filter(chat=chat)
-    messages = [
-        {"role": message.role, "content": message.content} for message in messages
-    ]
+    try:
+        Message.objects.create(chat=chat, content=content, role="user")
+        messages = Message.objects.filter(chat=chat)
+        messages = [
+            {"role": message.role, "content": message.content} for message in messages
+        ]
 
-    response_message = (
-        openai.ChatCompletion.create(
-            model=settings.OPENAI_MODEL,
-            messages=messages,
+        response_message = (
+            openai.ChatCompletion.create(
+                model=settings.OPENAI_MODEL,
+                messages=messages,
+            )
+            .choices[0]
+            .message.content
         )
-        .choices[0]
-        .message.content
-    )
 
-    Message.objects.create(chat=chat, content=response_message, role="assistant")
-    return response_message
+        Message.objects.create(chat=chat, content=response_message, role="assistant")
+        return response_message
+    except Exception as e:
+        return str(e)
