@@ -3,43 +3,61 @@
 {% block title %}Real State{% endblock %}
 {% block content %}
 
-{% csrf_token %}
 {% load crispy_forms_tags %}
-
 <div class="container py-5">
 	{% if user.is_authenticated %}
-	<h1><a href="{% url 'new_chat' %}" class="btn btn-primary">New Chat</a></h1>
 
 	<p class="text-center">Real State Chat Api</p>
-	{% for content in content_messages %}
+	<div id="message-container">
+        {% for content in content_messages %}
             <div>
                 <p>{{ content }}</p>
             </div>
         {% endfor %}
+    </div>
 
-	<form id="new-message-form" method="POST" action="{% url 'new_message' %}">
+	<form id="new-message-form" method="POST">
 		{% csrf_token %}
-		<input type="hidden" name="chat_id" value="{{ request.GET.chat_id }}">
 		<div class="form-group">
 			<textarea name="content" class="form-control" rows="3"></textarea>
 		</div>
-		<button type="submit" class="btn btn-primary">Enviar mensaje</button>
+		<button type="submit" class="btn btn-primary">Send Message</button>
 	</form>
 	<script>
-		document.getElementById("new-message-form").addEventListener("submit", function(event) {
-			event.preventDefault();
-			let xhr = new XMLHttpRequest();
-			xhr.open("POST", "{% url 'new_message' %}");
-			xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-			xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
-			xhr.onload = function() {
-				// redirige a la página correspondiente
-				window.location.href = xhr.getResponseHeader("Location");
-			};
-			let chat_id = new URLSearchParams(window.location.search).get("chat_id");
-			xhr.send(JSON.stringify({ content: document.querySelector("#new-message-form textarea[name='content']").value, chat_id: chat_id }));
-		});
-	</script>
+        function addMessageToDOM(content) {
+            let messageContainer = document.getElementById("message-container");
+            let newMessage = document.createElement("div");
+            let newMessageContent = document.createElement("p");
+            newMessageContent.textContent = content;
+            newMessage.appendChild(newMessageContent);
+            messageContainer.appendChild(newMessage);
+        }
+
+        document.getElementById("new-message-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+            let messageInput = document.querySelector("#new-message-form textarea[name='content']");
+            let userMessage = messageInput.value;
+
+            let xhr = new XMLHttpRequest();
+            xhr.open("POST", "{% url 'new_message' %}");
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    let response_data = JSON.parse(xhr.responseText);
+                    let botMessage = response_data.message;
+
+                    // Add user and bot messages to the DOM
+                    addMessageToDOM(userMessage);
+                    addMessageToDOM(botMessage);
+                }
+            };
+            xhr.send(JSON.stringify({ content: userMessage, chat_id: "{{ chat_id }}" }));
+
+            // Clear the message input
+            messageInput.value = "";
+        });
+    </script>
 
 	{% else %}
 		<h1 class="text-center"> This information is only for registered users</h1>
