@@ -25,8 +25,12 @@ def chat_page(request, chat_id):
         return redirect("chat_home")
 
     content_messages = list(
-        Message.objects.filter(chat=chat).values_list("content", flat=True)
+        Message.objects.filter(chat=chat, role__in=["assistant", "user"])
     )
+    content_messages = [
+        {"content": message.content, "assistant": message.role == "assistant"}
+        for message in content_messages
+    ]
     return render(
         request=request,
         template_name="chat.html",
