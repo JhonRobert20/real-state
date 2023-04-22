@@ -4,15 +4,16 @@
 {% block content %}
 
 {% load crispy_forms_tags %}
-<div class="container py-5">
+{% load static %}
+<div class="container-custom py-5">
 	{% if user.is_authenticated %}
 
-	<p class="text-center">Real State Chat Api</p>
+	<p class="text-center queso">Real State Chat Api</p>
 	<div id="message-container">
         {% for content in content_messages %}
-            <div>
-                <p>{{ content }}</p>
-            </div>
+			<div class="{% if content.assistant %}bot-background{% else %}user-background{% endif %}">
+				<p class="message">{{ content.content }}</p>
+			</div>
         {% endfor %}
     </div>
 
@@ -24,10 +25,17 @@
 		<button type="submit" class="btn btn-primary">Send Message</button>
 	</form>
 	<script>
-        function addMessageToDOM(content) {
+        function addMessageToDOM(content, assistant=false) {
             let messageContainer = document.getElementById("message-container");
+
             let newMessage = document.createElement("div");
-            let newMessageContent = document.createElement("p");
+			let newMessageContent = document.createElement("p");
+
+			let backgroundClass = assistant ? "bot-background" : "user-background";
+
+			newMessage.classList.add(backgroundClass);
+			newMessageContent.classList.add("message");
+
             newMessageContent.textContent = content;
             newMessage.appendChild(newMessageContent);
             messageContainer.appendChild(newMessage);
@@ -37,6 +45,8 @@
             event.preventDefault();
             let messageInput = document.querySelector("#new-message-form textarea[name='content']");
             let userMessage = messageInput.value;
+			addMessageToDOM(userMessage, false);
+
 
             let xhr = new XMLHttpRequest();
             xhr.open("POST", "{% url 'new_message' %}");
@@ -48,8 +58,7 @@
                     let botMessage = response_data.message;
 
                     // Add user and bot messages to the DOM
-                    addMessageToDOM(userMessage);
-                    addMessageToDOM(botMessage);
+                    addMessageToDOM(botMessage, true);
                 }
             };
             xhr.send(JSON.stringify({ content: userMessage, chat_id: "{{ chat_id }}" }));
